@@ -153,3 +153,28 @@ controller_1.buttonR1.pressed(Arm_Spin)
 Back_Bumper.pressed(freeze_bot)
 Front_Bumper.pressed(freeze_bot)
 controller_1.buttonR1.released(Arm_Stop)
+# Add your distance sensor (assuming Port 2)
+distance_sensor = Distance(Ports.PORT2)
+
+# Disable controller drive for this autonomous behavior
+remote_control_code_enabled = False
+
+# Infinite loop for object detection logic
+while True:
+    # Get the current distance reading
+    distance = distance_sensor.object_distance(MM)
+
+    if distance < 1500:
+        # Object detected within range — drive forward
+        left_drive_smart.set_velocity(50, PERCENT)
+        right_drive_smart.set_velocity(50, PERCENT)
+        left_drive_smart.spin(FORWARD)
+        right_drive_smart.spin(FORWARD)
+    else:
+        # No object — spin in place to the right
+        left_drive_smart.set_velocity(50, PERCENT)
+        right_drive_smart.set_velocity(50, PERCENT)
+        left_drive_smart.spin(FORWARD)
+        right_drive_smart.spin(REVERSE)
+
+    wait(20, MSEC)
